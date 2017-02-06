@@ -1,3 +1,5 @@
+![out.gif](out.gif)
+
 # Energenie controller APP
 
 ![app.png](app.png)
