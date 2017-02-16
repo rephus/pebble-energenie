@@ -1,5 +1,3 @@
-![out.gif](out.gif)
-
 # Energenie controller APP
 
 ![app.png](app.png)
@@ -13,12 +11,21 @@ Requires external hardware/software to convert API requests into radio signals c
 
 Based on [Pebble example menu layer](`https://github.com/pebble-examples/feature-menu-layer`)
 
+# Enable pebble developer connection on the phone
+
+* Open the official pebble app on your phone
+* Menu > Developer Connection
+* Enable the connection
+* REcord the IP address (you'll need it later to upload your app )
+
 # Pebble installation
 
 More info: https://developer.pebble.com/sdk/install/linux/
 
 Setup pebble env
 ```
+sudo apt-get install libsdl1.2debian libfdt1 libpixman-1-0 #emulator dependencies
+
 virtualenv --no-site-packages .env
 source .env/bin/activate
 pip install -r requirements.txt
@@ -36,7 +43,7 @@ alias pebble-install='pebble install --logs --emulator basalt'
 
 Enable dev mode on pebble app (settings) to do
 ```
-pebble install --phone <ip>
+alias pebble-install='pebble install --phone <ip> --logs'
 ```
 
 Build and launch

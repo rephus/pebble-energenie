@@ -2,8 +2,8 @@
 
 
 #define NUM_MENU_SECTIONS 1
-#define NUM_MENU_ICONS 4 //TODO
-#define NUM_FIRST_MENU_ITEMS 4
+#define NUM_MENU_ICONS 5 //TODO
+#define NUM_FIRST_MENU_ITEMS 5
 
 
 static Window *s_main_window;
@@ -67,16 +67,19 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
       // Use the row to specify which item we'll draw
       switch (cell_index->row) {
         case 0:
-          menu_cell_basic_draw(ctx, cell_layer, "Socket 1", "", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "All sockets", "", NULL);
           break;
         case 1:
-          menu_cell_basic_draw(ctx, cell_layer, "Socket 2", "", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Air pump", "", NULL);
           break;
         case 2:
-          menu_cell_basic_draw(ctx, cell_layer, "Socket 3", "", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Aquarium light", "", NULL);
           break;
         case 3:
-            menu_cell_basic_draw(ctx, cell_layer, "Socket 4", "", NULL);
+            menu_cell_basic_draw(ctx, cell_layer, "Socket 3", "", NULL);
+            break;
+        case 4:
+            menu_cell_basic_draw(ctx, cell_layer, "Film light", "", NULL);
             break;
       }
       break;

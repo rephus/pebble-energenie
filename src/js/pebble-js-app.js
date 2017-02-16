@@ -5,6 +5,15 @@
 * success: successful callback function with JSON result
 * error (optional): trigger callback function with no result on error (if defined)
 */
+
+var addresses = [
+  6916878, //air pump
+  6916870, //Aquarium lights
+  6916874,  //Socket 3
+  6916866 // film lights
+];
+
+
 var xhrRequest = function (url, type, success, error) {
   console.log("Making request to "+type +": "+url);
     var xhr = new XMLHttpRequest();
@@ -12,8 +21,9 @@ var xhrRequest = function (url, type, success, error) {
       if (xhr.readyState === 4) {
         console.log("Received response: "+ xhr.status);
         if (xhr.status === 200) {
-          var json = JSON.parse(this.responseText);
-          success(json);
+        //  var json = JSON.parse(this.responseText);
+        //  success(json);
+          success(this.responseText);
         } else {
           console.log('Error, status code: '+ xhr.status);
           if (error) error();
@@ -28,19 +38,26 @@ var xhrRequest = function (url, type, success, error) {
 var devices = [false, false, false, false];
 
 function triggerEnergenie(device) {
-  var newStatus = true;
-  if (devices[device]) newStatus = false;
 
+  if (device === 0) {
+    for (var i=0; i< addresses.length; i++) triggerEnergenie(i);
+    return;
+  }
+
+  var address = addresses[device-1];
+  if (devices[device] === false) address ++;
   console.log("Triggering energenie socket " + device + " "+ status);
 
-  var url = 'http://192.168.2.150:5001/switch/?socket='+device + "&status="+ newStatus;
-  xhrRequest(url, 'GET', function(json){
-    console.log("Returned json:" + JSON.stringify(json) );
-    devices[device] = newStatus;
+  //var url = 'http://192.168.2.150:5001/switch?socket='+device + "&status="+ newStatus;
+  var url = 'http://192.168.2.56/cmd?code='+address+":24";
+  xhrRequest(url, 'GET', function(response){
+    //console.log("Returned response:" + response );
     // we don't actually need to reply back
+    devices[device] = !devices[device];
+/*
     Pebble.sendAppMessage({
       'WEATHER_ICON_KEY': 1,
-    });
+    });*/
   });
 }
 
@@ -52,8 +69,11 @@ Pebble.addEventListener('ready', function (e) {
 
 Pebble.addEventListener('appmessage', function (e) {
   console.log("addEventListener appmessage: "+ e.type + JSON.stringify(e));
-  firstKey = Object.keys(e.data)[0];
-  device = e.data[firstKey];
+  var device = e.eventPhase;
+  if (!device) {
+    var firstKey = Object.keys(e.data)[0];
+    device = e.data[firstKey];
+  }
   //window.navigator.geolocation.getCurrentPosition(locationSuccess, locationError,  locationOptions);
   triggerEnergenie(device);
 });
